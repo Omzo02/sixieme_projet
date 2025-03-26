@@ -12,7 +12,8 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT ||'4000');
+
+const port = normalizePort('4000');  // Utiliser 4000 directement sans process.env.PORT
 app.set('port', port);
 
 const errorHandler = error => {
