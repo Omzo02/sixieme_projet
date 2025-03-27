@@ -53,6 +53,16 @@ exports.updateBook = (req, res, next) => {
       });
 };
 
+exports.getBestRatedBooks = async (req, res) => {
+  try {
+      const books = await Book.find().sort({ rating: -1 }).limit(3); // Trier par note descendante
+      res.status(200).json(books);
+  } catch (error) {
+      res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+
 // Supprimer un livre
 exports.deleteBook = (req, res) => {
   Book.deleteOne({ _id: req.params.id })
