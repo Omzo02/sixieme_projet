@@ -11,6 +11,7 @@ router.post('/', auth, multer, bookCtrl.createBook); // Créer livre //
 router.get('/:id', bookCtrl.getBookById); // Obtenir un livre //
 router.put('/:id', auth, multer, bookCtrl.updateBook);// MAJ livre //
 router.delete('/:id', auth, bookCtrl.deleteBook); // Supprimer un livre //
+router.post('/:id/rating', auth, bookCtrl.rateBook); // Pour noter un livre //
 
 
 
