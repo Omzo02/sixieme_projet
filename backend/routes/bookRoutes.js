@@ -14,5 +14,4 @@ router.delete('/:id', auth, bookCtrl.deleteBook); // Supprimer un livre //
 router.post('/:id/rating', auth, bookCtrl.rateBook); // Pour noter un livre //
 
 
-
 module.exports = router;
