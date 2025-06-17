@@ -85,7 +85,6 @@ exports.deleteBook = (req, res, next) => {
 };
 
 // Pour noter un livre
-
 exports.rateBook = (req, res) => {
   const { grade } = req.body;
   const userId = req.auth.userId; // L'ID de l'utilisateur connecté
