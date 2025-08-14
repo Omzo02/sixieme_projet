@@ -1,11 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const bookRoutes = require('./routes/bookRoutes');  // Routes pour les livres
 const userRoutes = require('./routes/userRoutes');  // Routes pour l'authentification
+
 
 const path = require('path');
 
 const app = express();
+
+
+// Charger les variables d'environnement
+dotenv.config();
+
 
 // Middleware pour gérer les JSON
 app.use(express.json());
@@ -25,7 +32,7 @@ app.options('*', (req, res) => {
 });
 
 // Connexion à MongoDB
-mongoose.connect('mongodb+srv://sixieme_projet:***REMOVED***@cluster2.02aqv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster2')
+mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('Connexion à MongoDB réussie !'))
 .catch(error => console.log('Connexion à MongoDB échouée :', error));
 
