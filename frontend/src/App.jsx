@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter, Route, Routes,
+  BrowserRouter, Route, Routes, Navigate,
 } from 'react-router-dom';
 import SignIn from './pages/SignIn/SignIn';
 import Home from './pages/Home/Home';
@@ -31,6 +31,8 @@ function App() {
           <Route path={APP_ROUTES.BOOK} element={<Book />} />
           <Route path={APP_ROUTES.UPDATE_BOOK} element={<UpdateBook />} />
           <Route path={APP_ROUTES.ADD_BOOK} element={<AddBook />} />
+          <Route path="/dashboard" element={<Navigate to="/" />} />
+
         </Routes>
         <Footer />
       </div>

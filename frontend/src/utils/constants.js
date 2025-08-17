@@ -4,6 +4,7 @@ export const API_ROUTES = {
   SIGN_IN: `${API_URL}/api/auth/login`,
   BOOKS: `${API_URL}/api/books`,
   BEST_RATED: `${API_URL}/api/books/bestrating`,
+   DASHBOARD: `${API_URL}/api/dashboard`, // 👈 nouvelle route backend
 };
 
 export const APP_ROUTES = {
@@ -12,4 +13,5 @@ export const APP_ROUTES = {
   ADD_BOOK: '/Ajouter',
   BOOK: '/livre/:id',
   UPDATE_BOOK: '/livre/modifier/:id',
+   DASHBOARD: '/', // ✅ en pratique, dashboard = accueil
 };

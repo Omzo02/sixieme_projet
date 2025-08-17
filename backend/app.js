@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bookRoutes = require('./routes/bookRoutes');  // Routes pour les livres
 const userRoutes = require('./routes/userRoutes');  // Routes pour l'authentification
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 
 const path = require('path');
@@ -40,6 +41,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/api', dashboardRoutes); // ✅ ajoute la route dashboard
 
 // Exporter l'application pour utilisation dans server.js
 module.exports = app;

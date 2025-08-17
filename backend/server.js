@@ -1,5 +1,8 @@
 const http = require('http');
 const app = require('./app');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+app.use('/api', dashboardRoutes);
+
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
