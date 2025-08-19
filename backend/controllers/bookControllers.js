@@ -64,6 +64,8 @@ exports.updateBook = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Afficher les trois meilleurs livres selon leur note moyenne
+
 exports.getBestRatedBooks = async (req, res) => {
   try {
       const books = await Book.find().sort({ averageRating: -1 }).limit(3); 
