@@ -1,13 +1,9 @@
-const http = require('http');
-const app = require('./app');
-const dashboardRoutes = require('./routes/dashboardRoutes');
-
-// Définition des routes dashboard
-app.use('/api', dashboardRoutes);
+const http = require('http'); // Import du module natif Node.js pour créer un serveur HTTP
+const app = require('./app'); // Import de l’application Express configurée dans app.js
 
 // Fonction pour normaliser le port
 const normalizePort = (val) => {
-  const port = parseInt(val, 10);
+  const port = parseInt(val, 10); // Convertit en nombre entier
   if (isNaN(port)) {
     return val;
   }
@@ -18,7 +14,7 @@ const normalizePort = (val) => {
 };
 
 // Port par défaut
-const DEFAULT_PORT = 4000;
+const DEFAULT_PORT = 4000; // Port par défaut si aucun n’est précisé
 
 // Fonction de gestion d’erreurs
 const errorHandler = (error, server, port) => {
@@ -42,18 +38,21 @@ const errorHandler = (error, server, port) => {
 // Fonction pour démarrer le serveur
 const startServer = (port) => {
   const normalizedPort = normalizePort(port);
-  app.set('port', normalizedPort);
+  app.set('port', normalizedPort); // Stocke le port dans Express
 
-  const server = http.createServer(app);
-
+  const server = http.createServer(app); // Crée le serveur HTTP avec Express
+  
+  // Gestion des erreurs
   server.on('error', (error) => errorHandler(error, server, normalizedPort));
+
+  // Quand le serveur est lancé avec succès
   server.on('listening', () => {
     const address = server.address();
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + normalizedPort;
     console.log('🚀 Serveur démarré sur ' + bind);
   });
 
-  server.listen(normalizedPort);
+  server.listen(normalizedPort); // Lance l’écoute du serveur sur le port choisi
 };
 
 // Lancement du serveur
