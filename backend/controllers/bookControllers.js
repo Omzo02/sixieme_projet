@@ -18,7 +18,7 @@ exports.getBookById = (req, res) => {
         return res.status(404).json({ message: 'Livre non trouvé' });
       }
       // Si le livre est trouvé, on renvoie le livre avec le code 200 (OK)
-      res.status(200).json(book);
+      return res.status(200).json(book);
     })
     .catch(error => 
       // Si une erreur survient (ex: ID malformé ou problème serveur), on renvoie une erreur 500
@@ -94,54 +94,42 @@ exports.updateBook = (req, res, next) => {
       return Book.updateOne(
         { _id: req.params.id },
         { ...bookObject, _id: req.params.id }
-      );
+      ).then(() => res.status(200).json({ message: 'Livre modifié !' }));
     })
-    // 7️⃣ Réponse au front
-    .then(() => res.status(200).json({ message: 'Livre modifié !' }))
     .catch(error => res.status(400).json({ error }));
 };
 
 
 // Afficher les trois meilleurs livres
-exports.getBestRatedBooks = async (req, res) => {
-  try {
-    // 1️⃣ Récupération des livres, triés par la moyenne de note (du plus grand au plus petit)
-    const books = await Book.find().sort({ averageRating: -1 }).limit(3);
-
-    // 2️⃣ Réponse envoyée au front avec seulement les 3 premiers
-    res.status(200).json(books);
-  } catch (error) {
-    // 3️⃣ Gestion des erreurs serveur (ex: problème avec MongoDB)
-    res.status(500).json({ message: "Erreur serveur", error });
-  }
+exports.getBestRatedBooks = (req, res) => {
+  // 1️⃣ Récupération des livres, triés par la moyenne de note (du plus grand au plus petit)
+  Book.find().sort({ averageRating: -1 }).limit(3)
+    .then(books => res.status(200).json(books)) // 2️⃣ Réponse envoyée au front avec seulement les 3 premiers
+    .catch(error => res.status(500).json({ message: "Erreur serveur", error })); // 3️⃣ Gestion des erreurs serveur (ex: problème avec MongoDB)
 };
 
 
 // Supprimer un livre
 exports.deleteBook = (req, res, next) => {
 
-// 1️⃣ On cherche le livre dans la base de donnée avec son id
-
+  // 1️⃣ On cherche le livre dans la base de donnée avec son id
   Book.findOne({ _id: req.params.id })
     .then(book => {
 
-      // 2️⃣ Vérie si le livre existe
+      // 2️⃣ Vérifie si le livre existe
       if (!book) {
         return res.status(404).json({ message: 'Livre non trouvé' });
       }
 
       // 3️⃣ Vérification que l'utilisateur connecté est bien le propriétaire du livre
-
       if (book.userId != req.auth.userId) {
         return res.status(403).json({ message: 'Accès interdit' });
       }
 
       // 4️⃣ Récupération du nom de fichier de l'image à partir de son URL
-
       const filename = book.imageUrl.split('/images/')[1];
 
       // 5️⃣ Suppression du fichier image dans le dossier /images
-
       fs.unlink(`images/${filename}`, () => {
         Book.deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Livre supprimé !' }))
@@ -190,11 +178,8 @@ exports.rateBook = (req, res) => {
       ) / totalRatings;
 
       // 6️⃣ Sauvegarde du livre avec la nouvelle note et la nouvelle moyenne
-      return book.save();
+      return book.save()
+        .then(updatedBook => res.status(201).json({ message: 'Notation enregistrée', book: updatedBook }));
     })
-    // 7️⃣ Réponse au front
-    .then(updatedBook =>
-      res.status(201).json({ message: 'Notation enregistrée', book: updatedBook })
-    )
     .catch(error => res.status(500).json({ message: 'Erreur serveur', error }));
 };

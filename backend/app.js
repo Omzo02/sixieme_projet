@@ -7,21 +7,23 @@ const userRoutes = require('./routes/userRoutes');  // Import des routes pour l'
 
 const path = require('path');
 
+// Création de l’application Express
+// C’est ici qu’on configure les middlewares, la connexion à la BDD et les routes.
 const app = express();
 
 
-// Charger les variables d'environnement
+// Charger les variables d'environnement depuis le fichier `.env`
 dotenv.config();
 
 
-// Middleware pour gérer les JSON dans le body
+// Pour que Express comprenne les requêtes avec du JSON dans le body
 app.use(express.json());
 
 // Gestion des erreurs CORS (Cross-Origin Resource Sharing)
 app.use((req, res, next) => {
 
-    // Autorise uniquement le frontend local à accéder à l’API
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');  
+    // Autorise l'accés à notre API depuis n'importe quel origine
+    res.setHeader('Access-Control-Allow-Origin', '*');  
     // Autorise certains en-têtes (dont Authorization → nécessaire pour JWT)
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
      // Méthodes HTTP autorisées
